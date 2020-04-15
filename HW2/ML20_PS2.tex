@@ -1,0 +1,295 @@
+\documentclass[a4paper,UTF8]{article}
+\usepackage{ctex}
+\usepackage[margin=1.25in]{geometry}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{epsfig}
+\usepackage{color}
+\usepackage{mdframed}
+\usepackage{lipsum}
+\usepackage{graphicx}
+\newmdtheoremenv{thm-box}{Theorem}
+\newmdtheoremenv{prop-box}{Proposition}
+\newmdtheoremenv{def-box}{定义}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+	numbers=left, 
+	numberstyle= \tiny, 
+	keywordstyle= \color{ blue!70},
+	commentstyle= \color{red!50!green!50!blue!50}, 
+	frame=shadowbox, % 阴影效果
+	rulesepcolor= \color{ red!20!green!20!blue!20} ,
+	escapeinside=``, % 英文分号中可写入中文
+	xleftmargin=2em,xrightmargin=2em, aboveskip=1em,
+	framexleftmargin=2em
+} 
+
+\usepackage{booktabs}
+
+\setlength{\evensidemargin}{.25in}
+\setlength{\textwidth}{6in}
+\setlength{\topmargin}{-0.5in}
+\setlength{\topmargin}{-0.5in}
+% \setlength{\textheight}{9.5in}
+\usepackage{fancyhdr}                                
+\usepackage{lastpage}                                           
+\usepackage{layout}                                             
+\footskip = 12pt 
+\pagestyle{fancy}                                    
+\lhead{2020年春季}                    
+\chead{机器学习导论}          
+\rhead{作业二}                                                                                               
+\cfoot{\thepage}                                                
+\renewcommand{\headrulewidth}{1pt}  			%页眉线宽，设为0可以去页眉线
+\setlength{\skip\footins}{0.5cm}    			%脚注与正文的距离           
+\renewcommand{\footrulewidth}{0pt}  			%页脚线宽，设为0可以去页脚线
+
+\makeatletter 									%设置双线页眉                                        
+\def\headrule{{\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi%
+\hrule\@height 1.0pt \@width\headwidth\vskip1pt	%上面线为1pt粗  
+\hrule\@height 0.5pt\@width\headwidth  			%下面0.5pt粗            
+\vskip-2\headrulewidth\vskip-1pt}      			%两条线的距离1pt        
+\vspace{6mm}}     								%双线与下面正文之间的垂直间距              
+\makeatother  
+
+\numberwithin{equation}{section}
+%\usepackage[thmmarks, amsmath, thref]{ntheorem}
+\newtheorem{theorem}{Theorem}
+\newtheorem*{definition}{Definition}
+\newtheorem*{solution}{Solution}
+\newtheorem*{prove}{Proof}
+\newcommand{\indep}{\rotatebox[origin=c]{90}{$\models$}}
+
+\usepackage{multirow}
+
+%--
+
+%--
+\begin{document}
+\title{\textbf{机器学习导论\\
+作业二}}
+\author{\textbf{181220031} \textbf{李惟康} \texttt{liwk@smail.nju.edu.cn}}
+\maketitle
+
+\section{[15 pts] Linear Regression}
+给定数据集$D=\{(\mathbf{x}_i,y_i)\}_{i=1}^m$，最小二乘法试图学得一个线性函数$y=\mathbf{w^*}\mathbf{x}+b^*$使得残差的平方和最小化，即
+\begin{equation}
+	(\mathbf{w^*},b^*) = \mathop{\arg\min}_{\mathbf{w},b} \sum_{i=1}^m [y_i-(\mathbf{w}\mathbf{x_i}+b)]^2 . 
+\end{equation}
+“最小化残差的平方和”与“最小化数据集到线性模型的欧氏距离之和”或是“最小化数据集到线性模型的欧氏距离的平方和”一致吗？考虑下述例子
+\begin{equation}
+	D = \{ (-1,0) , (0,0) , (1,1) \} , 
+\end{equation}
+并回答下列问题。
+
+\begin{enumerate}[(1)]
+	\item \textbf{[5 pts]} 给出“最小化残差的平方和”在该例子中的解$(w^*,b^*)$。
+	\item \textbf{[5 pts]} 给出“最小化数据集到线性模型的欧氏距离的平方和”在该例子中的数学表达式，并给出其解$(w_{E},b_{E})$，该解与$(w^*,b^*)$一致吗？
+	\item \textbf{[5 pts]} 给出“最小化数据集到线性模型的欧氏距离之和”在该例子中
+	的数学表达式，$(w^*,b^*)$是该问题的解吗？
+\end{enumerate}
+
+\begin{solution}
+~\\\textsc{(1)} 根据线性回归最小二乘法的参数估计的闭式解形式有：
+	\begin{equation}\nonumber
+	\begin{aligned}
+	w^* &= \frac{\sum\limits_{i=1}^{m} y_i(x_i-\bar{x})}{\sum\limits_{i=1}^{m} x_i^2-\frac{1}{m}\left(\sum\limits_{i=1}^{m} x_i\right)^2} = \frac{1}{2}\\
+	b^* &= \frac{1}{m} \sum_{i=1}^m (y_i-wx_i) = \frac{1}{3}			
+	\end{aligned}
+	\end{equation}
+	其中，$\bar{x}=\frac{1}{m}\sum_{i=1}^mx_i.$
+\\\textsc{(2)} 根据欧氏距离 \textsl{(Euclidean Distance)} 的定义我们可将数学表达式重写为：
+ 	\begin{equation}\nonumber
+ 	\begin{aligned}
+	(\mathbf{w_E},b_E) &= \mathop{\arg\min}_{\mathbf{w},b} \dfrac{\sum\limits_{i=1}^m [(\hat x_i - x_i)^2+(\hat y_i - y_i)^2]}{\mathbf{w}^2+1}
+	\\ &= \mathop{\arg\min}_{\mathbf{w},b} \dfrac{\sum\limits_{i=1}^m [y_i-(\mathbf{w}\mathbf{x_i}+b)]^2}{\mathbf{w}^2+1}
+	\end{aligned}	
+	\end{equation}
+	将给定数据集代入上式，并分别令损失函数对于$\mathbf{w}$,$b$的偏导数为$0$；\\
+	因此解得：$w_E = \frac{\sqrt{13}-2}{3}$,$b_E = \frac{1}{3}$。
+\\\textsc{(3)} 根据欧氏距离 \textsl{(Euclidean Distance)} 的定义我们可将数学表达式重写为：
+ 	\begin{equation}\nonumber
+ 	\begin{aligned}
+ 	(\mathbf{w^*},b^*) &= \mathop{\arg\min}_{\mathbf{w},b} \dfrac{\sum\limits_{i=1}^m \sqrt{[(\hat x_i - x_i)^2+(\hat y_i - y_i)^2]}}{\sqrt{\mathbf{w}^2+1}}
+	\\ &= \mathop{\arg\min}_{\mathbf{w},b} \dfrac{\sum\limits_{i=1}^m |y_i-(\mathbf{w}\mathbf{x_i}+b)|}{\sqrt{\mathbf{w}^2+1}}
+	\end{aligned}	
+	\end{equation}
+	$(w^*,b^*)$不是该问题的解。
+\end{solution}
+
+\section{[40+5 pts] 编程题, Logistic Regression}
+\textbf{请结合编程题指南进行理解}
+\par 试考虑对率回归与线性回归的关系。最简单的对率回归的所要学习的任务仅是根据训练数据学得一个$\beta=(\omega;b)$，而学习$\beta$的方式将有下述两种不同的实现：
+\par 0. [闭式解] 直接将分类标记作为回归目标做线性回归，其闭式解为 \begin{equation}
+	\beta=({\hat{X}}^T\hat{X})^{-1}\hat{X}^Ty
+	\end{equation}, 其中$\hat{X}=(X;\vec{1})$
+
+\par 1. [数值方法] 利用牛顿法或梯度下降法解数值问题
+\begin{equation}
+	\min_{\mathbf{\beta}} \sum_{i=1}^{m}(-y_i\beta^T\hat{x_i}+\ln (1+e^{\beta^T\hat{x_i}})). 
+\end{equation}
+得到$\beta$后两个算法的决策过程是一致的，即：
+\begin{enumerate}[(1)]
+	\item $z=\beta X_{i}$
+	\item $f=\frac{1}{1+e^{-z}}$
+	\item 决策函数\begin{equation}
+		y_{i}=
+		\begin{cases}
+		1,&\mbox{if $f>\theta$}\\
+		0,&\mbox{else}
+		\end{cases}
+		\end{equation}
+	\end{enumerate}
+	其中$\theta$为分类阈值。回答下列问题：
+	\begin{enumerate}[(1)]
+		\item \textbf{[10 pts]} 试实现用闭式解方法训练分类器。若设分类阈值$\theta=0.5$，此分类器在Validation sets下的准确率、查准率、查全率是多少？
+		\item \textbf{[10 pts]} 利用所学知识选择合适的分类阈值，并输出闭式解方法训练所得分类器在test sets下的预测结果。
+		\item \textbf{[10 pts]} 利用数值方法重新训练一个新的分类器。若设分类阈值$\theta=0.5$，此分类器在Validation sets下的准确率、查准率、查全率是多少？
+		\item \textbf{[10 pts]} 利用所学知识选择合适的分类阈值，并输出数值方法训练所得分类器在test sets下的预测结果。
+		\item \textbf{[选做][Extra 5 pts]} 谈谈两种方法下分类阈值的变化对预测结果的影响，简要说明看法。
+	\end{enumerate}
+\begin{solution}
+~\\\textsc{(1)} 使用闭式解方法训练分类器，在分类阈值$\theta=0.5$的条件下，此分类器在Validation sets下的准确率为$0.74$、查准率为$0.67$、查全率为$1$。 
+~\\\textsc{(2)} 预测结果见附件。
+~\\\textsc{(3)} 使用牛顿法训练分类器，在分类阈值$\theta=0.5$，步长$\gamma = 0.001$的条件下，此分类器在Validation sets下的准确率为$1$、查准率为$1$、查全率为$1$。
+~\\\textsc{(4)} 预测结果见附件。
+\end{solution}
+
+\section{[10 pts] Linear Discriminant Analysis}
+在凸优化中，试考虑两个优化问题，如果第一个优化问题的解可以直接构造出第二个优化问题的解，第二个优化问题的解也可以直接构造出第一个优化问题的解，则我们称两个优化问题是等价的。基于此定义，试证明优化问题\textbf{P1}与优化问题\textbf{P2}是等价的。
+\begin{equation}
+	\label{P1}
+	\max_{\mathbf{w}} \frac{\mathbf{w}^\top S_b \mathbf{w}}{\mathbf{w}^\top S_w \mathbf{w}} . 
+\end{equation}
+\begin{equation}
+	\label{P2}
+	\begin{aligned}
+		\min_{\mathbf{w}} & \quad -\mathbf{w}^\top S_b \mathbf{w} \\ 
+		\text{s.t.} & \quad \mathbf{w}^\top S_w \mathbf{w} = 1 . 
+	\end{aligned}
+\end{equation}
+
+\begin{solution}
+~\\考虑问题\textsc{P1}：引入等式约束 $\mathbf{w}^\top S_w \mathbf{w} = 1$，则该问题转化为：
+	\begin{equation}\nonumber		
+	\begin{aligned}
+		\max_\mathbf{w} & \quad \mathbf{w}^\top S_b \mathbf{w}\\
+		\text{s.t.} & \quad \mathbf{w}^\top S_w \mathbf{w} = 1 . 	
+	\end{aligned}
+	\end{equation}
+显然该问题的解等价于优化问题\textsc{P2} 的解；
+~\\考虑问题\textsc{P2}：显然该问题等价于：
+	\begin{equation}\nonumber		
+	\begin{aligned}
+		\min_{\mathbf{w}} & \quad -\mathbf{w}^\top S_b \mathbf{w} \\ 
+		\text{s.t.} & \quad \mathbf{w}^\top S_w \mathbf{w} = 1 . 
+	\end{aligned}
+	\end{equation} 
+根据等式约束易有：$\mathbf{ww}^T = (S_w)^{-1}$，因此该问题转化为：
+	\begin{equation}\nonumber
+	\min_{\mathbf{w}} \quad - (S_w\mathbf{w})^{-1} (\mathbf{w}^\top)^{-1}\mathbf{w}^\top S_b \mathbf{w} = - \frac{\mathbf{w}^\top S_b \mathbf{w}}{\mathbf{w}^\top S_w\mathbf{w}}	
+	\end{equation}
+	故得证
+\end{solution}
+\section{[35 pts] Multiclass Learning}
+在处理多分类学习问题的时候，我们通常有两种处理思路：一是间接求解，利用一些基本策略(OvO, OvR, MvM)将多分类问题转换为二分类问题，进而利用二分类学习器进行求解。二是直接求解，将二分类学习器推广到多分类学习器。
+\subsection{问题转换}
+\begin{enumerate}[(1)]
+	\item \textbf{[5 pts]} 考虑如下多分类学习问题：假设样本数量为$n$，类别数量为$C$，二分类器对于大小为$m$的数据训练的时间复杂度为$ \mathcal{O}(m) $(比如利用最小二乘求解的线性模型)时，试分别计算在OvO、OvR策略下训练的总时间复杂度。
+	\item \textbf{[10 pts]} 当我们使用MvM处理多分类问题时，正、反类的构造必须有特殊的设计，一种最常用的技术为“纠错输出码”(ECOC)，根据阅读材料(\href{ccs.neu.edu/home/vip/teach/MLcourse/4_boosting/lecture_notes/ecoc/ecoc.pdf}{Error-Correcting Output Codes}、\href{https://arxiv.org/pdf/cs/9501101.pdf}{Solving Multiclass Learning Problems via Error-Correcting Output Codes}\cite{dietterich1994solving}；前者为简明版，后者为完整版)回答下列问题：
+	\begin{enumerate}[1)]
+		\item 假设纠错码之间的最小海明距离为$n$，请问该纠错码至少可以纠正几个分类器的错误？对于图\ref{img}所示的编码，请计算该纠错码的最小海明距离并分析当两个分类器出错时该编码的纠错情况。
+		\begin{figure}[htbp]
+			\centering
+			\includegraphics[width=.8\textwidth]{figure/codeword.png} %1.png是图片文件的相对路径
+			\caption{3类8位编码} %caption是图片的标题
+			\label{img} %此处的label相当于一个图片的专属标志，目的是方便上下文的引用
+		\end{figure}
+		\item 令码长为8，类别数为4，试给出海明距离意义下的最优ECOC编码，并简述构造思路。
+		\item 试简述好的纠错码应该满足什么条件？(请参考完整版阅读资料)
+		\item ECOC编码能起到理想纠错作用的重要条件是：在每一位编码上出错的概率相当且独立，试分析多分类任务经ECOC编码后产生的二类分类器满足该条件的可能性及由此产生的影响。
+	\end{enumerate}	
+	\item \textbf{[10 pts]} 使用OvR和MvM将多分类任务分解为二分类任务求解时，试论述为何无需专门这对类别不平衡进行处理。
+\end{enumerate}
+\subsection{模型推广}
+\textbf{[10 pts]} 对数几率回归是一种简单的求解二分类问题的广义线性模型，试将其推广到多分类问题上，其中标记为$y\in\{1,2\dots,K\}$。
+
+提示：考虑如下$K-1$个对数几率
+$$\ln\frac{P(y=1|\mathbf{x})}{P(y=K|\mathbf{x})},	\ln\frac{P(y=2|\mathbf{x})}{P(y=K|\mathbf{x})},\cdots,	\ln\frac{P(y=K-1|\mathbf{x})}{P(y=K|\mathbf{x})}$$
+
+\begin{solution}
+~\\\textbf{4.1}
+\\\textsc{(1)} 考虑 \textsc{OvO} 策略：这一策略的训练过程当中共需要训练 $\frac{C(C-1)}{2}$ 个分类器，且大小为$m$的数据训练的时间复杂度为$ \mathcal{O}(m) $。注意到每个类别样例均被 $C-1$ 个分类器用作训练样例，则所有分类器的训练集的大小之和为 $(C-1)n$，因此总时间复杂制度为$ \mathcal{O}((C-1)m) $。\\
+考虑 \textsc{OvR} 策略：这一策略的训练过程当中共需要训练 $C$ 个分类器，并且每个分类器的训练集大小均为 $m$，即时间复杂度为$ \mathcal{O}(m) $。因此总时间复杂度为$ \mathcal{O}(Cm) $。\\
+\textsc{(2)}\, \textsc{1)} 由于纠错码之间的最小海明距离为$n$ ，即纠错码之间至少有$n$位不同。注意到在海明距离的尺度上，每一个分类器的错误都使得我们与正确编码的距离越来越大。若只有$\lfloor \frac{n-1}{2}\rfloor$个错误，则此时距离最近的编码仍是正确编码，即至少可以纠正$\lfloor \frac{n-1}{2}\rfloor$个错误。图$1$所示的纠错码的最小海明距离为$4$，因此至少可以纠正$1$个分类器的错误。\\ 
+\indent\textsc{2)} 根据阅读材料\textsc{\cite{dietterich1994solving}}当中给出的构造方法(Exhaustive Codes)，在类别数为$4$时，可行的编码方式有$7$种，如下表所示：
+\begin{table}[!htbp]
+\centering
+\scalebox{1.2}{
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+
+\multicolumn{2}{|c|}{\multirow{2}*{Class}}& \multicolumn{7}{c|}{Code Word}\\
+\cline{3-9}
+\multicolumn{2}{|c|}{}&$f_0$&$f_1$&$f_2$&$f_3$&$f_4$&$f_5$&$f_6$\\
+\hline
+\multicolumn{2}{|c|}{$c_0$}&1&1&1&1&1&1&1\\ 
+\multicolumn{2}{|c|}{$c_1$}&0&0&0&0&1&1&1\\
+\multicolumn{2}{|c|}{$c_2$}&0&0&1&1&0&0&1\\
+\multicolumn{2}{|c|}{$c_3$}&0&1&0&1&0&1&0\\
+\hline
+\end{tabular}}
+\end{table}\\
+当码长为 $8$ 时，在 $f_6$ 之后任意的添加一个编码，即为最优编码。注意到因为此时再加任意的编码都是现有编码的反码，此时，类别之间最小的海明距离仍为$4$。
+\\\indent\textsc{3)} 根据阅读材料\textsc{\cite{dietterich1994solving}}：对于多分类学习问题，好的纠错码应当满足以下两个性质：
+\begin{itemize}
+\item 行分离(Row separation)：在海明距离的尺度下，每个码字之间的距离应当足够大；
+\item 列分离(Column separation)：任意两个分类器 $f_i,f_j$,$(i\neq j)$ 的输出相互之间无关联。这一点可以通过使分类器 $f_j$ 编码与其他分类编码的海明距离足够大实现，且与其他分类编码的反码的海明距离也足够大。
+\end{itemize}
+
+\indent\textsc{4)}
+1. 每位编码出错的概率相当：即每一位上的分类器的泛化误差相同，根据教材\textsc{P66}可知，这个条件取决于样本之间的区分难度，即每个编码拆解后类别之间的差异越相同（即区分难度相近），则满足此条件的可能性越大。但实际情况中很难满足。
+
+2. 出错的可能性相互独立：参考资料\textsc{\cite{dietterich1994solving}}中给出一个好的纠错输出码应该满足的其中一个条件就是各个位上分类器相互独立(Column separation)，当类别越多时，满足这个条件的可能性越大。\\\indent 教材上同样介绍了产生的影响：一个理论纠错性质很好、但导致的二分类问题较难的编码，与另一个理论纠错性质差一些、但导致的二分类问题较简单的编码，最终产生的模型性能孰强孰弱很难说。\\
+\textsc{(3)} 根据教材\textsc{P66}有：
+对 \textsc{OvR} 、 \textsc{MvM} 来说，由于对每个类进行了相同的处理，其拆解出的二分类任务中类别不平衡的影响会相互抵消，因此通常不需专门处理.\\
+~\\\textbf{4.2}\\
+一个简单而直接的想法是，对于所有$K$个可能的分类结果，我们运行$K-1$个独立二元逻辑回归模型，在运行过程中把其中一个类别看成是主类别，然后将其它$K-1$个类别和我们所选择的主类别分别进行回归。同样采取将$\omega$和$b$吸收入向量形式 $\beta=(\omega;b)$，通过这样的方式，如果选择结果$K$作为主类别的话，我们可以得到：
+\begin{equation}
+\ln\frac{P(y=1|\mathbf{x})}{P(y=K|\mathbf{x})} = \beta_1\mathbf{x},\	\ln\frac{P(y=2|\mathbf{x})}{P(y=K|\mathbf{x})} = \beta_2\mathbf{x},\ \cdots,\	\ln\frac{P(y=K-1|\mathbf{x})}{P(y=K|\mathbf{x})} = \beta_{K-1}\mathbf{x}
+\end{equation}
+化简得到：
+\begin{equation}
+\begin{aligned}
+P(y=1|\mathbf{x}) &= P(y=K|\mathbf{x})\ e^{\beta_1\mathbf{x}}\\
+P(y=2|\mathbf{x}) &= P(y=K|\mathbf{x})\ e^{\beta_2\mathbf{x}}\\
+\cdots & \cdots \\
+P(y=K-1|\mathbf{x}) &= P(y=K|\mathbf{x})\ e^{\beta_{K-1}\mathbf{x}}
+\end{aligned}
+\end{equation}
+由于多类的概率之和为$1$，即：$P(y=K|\mathbf{x}) = 1 - \sum\limits_{i=1}^{K-1}P(y=i|\mathbf{x}) = 1 - \sum\limits_{i=1}^{K-1}P(y=K|\mathbf{x})\ e^{\beta_i\mathbf{x}}$\\
+故有：$P(y=K|\mathbf{x}) = \dfrac{1}{1+\sum\limits_{i=1}^{K-1}e^{\beta_i\mathbf{x}}}$.\\
+代入\textsc{(4.2)}式可得：
+\begin{equation}
+\begin{aligned}
+P(y=1|\mathbf{x}) &= \dfrac{e^{\beta_1\mathbf{x}}}{1+\sum\limits_{i=1}^{K-1}e^{\beta_i\mathbf{x}}}\\
+P(y=2|\mathbf{x}) &= \dfrac{e^{\beta_2\mathbf{x}}}{1+\sum\limits_{i=1}^{K-1}e^{\beta_i\mathbf{x}}}\\
+\cdots & \cdots \\
+P(y=K-1|\mathbf{x}) &= \dfrac{e^{\beta_{K-1}\mathbf{x}}}{1+\sum\limits_{i=1}^{K-1}e^{\beta_i\mathbf{x}}}
+\end{aligned}
+\end{equation}
+至此，我们就能计算出所有给定未预测样本情况下得到某个结果的概率。之后可通过极大似然法与二分类问题类似的来估计 $\beta$。
+\\由此，我们便完成了对数几率回归在多分类问题上的推广。
+\end{solution}
+
+\bibliographystyle{plain}
+\bibliography{ref.bib}
+\end{document}
