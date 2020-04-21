@@ -1,5 +1,48 @@
-mktexpk --mfmode / --bdpi 600 --mag 1+32/600 --dpi 632 cyberb74
-mktexpk --mfmode / --bdpi 600 --mag 1+32/600 --dpi 632 cyberb74
-mktexpk --mfmode / --bdpi 600 --mag 1+32/600 --dpi 632 cyberb74
-mktexpk --mfmode / --bdpi 600 --mag 1+32/600 --dpi 632 cyberb74
-mktexpk --mfmode / --bdpi 600 --mag 1+32/600 --dpi 632 cyberb74
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/BI/OT
+mktextfm SimSun/OT
+mktextfm SimSun/B/OT
+mktextfm SimSun/OT
+mktextfm SimSun/I/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/BI/OT
+mktextfm SimSun/OT
+mktextfm SimSun/B/OT
+mktextfm SimSun/OT
+mktextfm SimSun/I/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/BI/OT
+mktextfm SimSun/OT
+mktextfm SimSun/B/OT
+mktextfm SimSun/OT
+mktextfm SimSun/I/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
+mktextfm SimSun/OT
