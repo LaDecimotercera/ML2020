@@ -1,0 +1,158 @@
+\documentclass[a4paper,UTF8]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{color}
+\usepackage{ctex}
+\usepackage[unicode=true,colorlinks,linkcolor=blue,citecolor=blue]{hyperref} % 超链接
+\setCJKmainfont[BoldFont=SimHei, ItalicFont=KaiTi]{SimSun}
+\usepackage{enumerate}
+\usepackage[margin=1.25in]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+
+\theoremstyle{definition}
+\newtheorem*{solution}{Solution}
+\newtheorem*{prove}{Proof}
+\usepackage{multirow}              
+
+\setlength{\evensidemargin}{.25in}
+\setlength{\textwidth}{6in}
+\setlength{\topmargin}{-0.5in}
+\setlength{\topmargin}{-0.5in}
+% \setlength{\textheight}{9.5in}
+%%%%%%%%%%%%%%%%%%此处用于设置页眉页脚%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}                                
+\usepackage{lastpage}                                           
+\usepackage{layout}                                             
+\footskip = 12pt 
+\pagestyle{fancy}                    % 设置页眉                 
+\lhead{2020年春季}                    
+\chead{机器学习导论}                                                
+% \rhead{第\thepage/\pageref{LastPage}页} 
+\rhead{作业五}                                                                                               
+\cfoot{\thepage}                                                
+\renewcommand{\headrulewidth}{1pt}  			%页眉线宽，设为0可以去页眉线
+\setlength{\skip\footins}{0.5cm}    			%脚注与正文的距离           
+\renewcommand{\footrulewidth}{0pt}  			%页脚线宽，设为0可以去页脚线
+
+\makeatletter 									%设置双线页眉                                        
+\def\headrule{{\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi%
+		\hrule\@height 1.0pt \@width\headwidth\vskip1pt	%上面线为1pt粗  
+		\hrule\@height 0.5pt\@width\headwidth  			%下面0.5pt粗            
+		\vskip-2\headrulewidth\vskip-1pt}      			%两条线的距离1pt        
+	\vspace{6mm}}     								%双线与下面正文之间的垂直间距              
+\makeatother  
+
+%--
+
+%--
+\begin{document}
+\title{机器学习导论\\习题五}
+\author{181220031, 李惟康, \texttt{liwk@smail.nju.edu.cn}}
+\maketitle
+
+
+\section*{学术诚信}
+
+本课程非常重视学术诚信规范，助教老师和助教同学将不遗余力地维护作业中的学术诚信规范的建立。希望所有选课学生能够对此予以重视。\footnote{参考尹一通老师\href{http://tcs.nju.edu.cn/wiki/}{高级算法课程}中对学术诚信的说明。}
+
+\begin{tcolorbox}
+	\begin{enumerate}
+		\item[(1)] 允许同学之间的相互讨论，但是{\color{red}\textbf{署你名字的工作必须由你完成}}，不允许直接照搬任何已有的材料，必须独立完成作业的书写过程;
+		\item[(2)] 在完成作业过程中，对他人工作（出版物、互联网资料）中文本的直接照搬（包括原文的直接复制粘贴及语句的简单修改等）都将视为剽窃，剽窃者成绩将被取消。{\color{red}\textbf{对于完成作业中有关键作用的公开资料，应予以明显引用}}；
+		\item[(3)] 如果发现作业之间高度相似将被判定为互相抄袭行为，{\color{red}\textbf{抄袭和被抄袭双方的成绩都将被取消}}。因此请主动防止自己的作业被他人抄袭。
+	\end{enumerate}
+\end{tcolorbox}
+
+\section*{作业提交注意事项}
+\begin{tcolorbox}
+	\begin{enumerate}
+		\item[(1)] 请在LaTeX模板中{\color{red}\textbf{第一页填写个人的姓名、学号、邮箱信息}}；
+		\item[(2)] 本次作业需提交该pdf文件、问题4可直接运行的源码(学号\_.py)、问题4的输出文件(学号\_ypred.csv)，将以上三个文件压缩成zip文件后上传。zip文件格式为{\color{red}\textbf{学号.zip}}，例如170000001.zip；pdf文件格式为{\color{red}\textbf{学号\_姓名.pdf}}，例如170000001\_张三.pdf。
+		\item[(3)] 未按照要求提交作业，或提交作业格式不正确，将会{\color{red}\textbf{被扣除部分作业分数}}；
+		\item[(4)] 本次作业提交截止时间为{\color{red}\textbf{6月5日23:59:59}}。除非有特殊情况（如因病缓交），否则截止时间后不接收作业，本次作业记零分。
+	\end{enumerate}
+\end{tcolorbox}
+
+\newpage
+
+\section*{\textbf{[35 pts]} Problem1 1 [PCA]}
+
+\begin{enumerate}[(1)]\item \textbf{[5 pts]}简要分析为什么主成分分析具有数据降噪能力;
+	\item \textbf{[10 pts]} 试证明对于N个样本（样本维度D>N）组成的数据集，主成分分析的有效投影子空间不超过N-1维;
+	\item \textbf{[20 pts]} 对以下样本数据进行主成分分析，将其降到一行，要求写出其详细计算过程。
+\begin{equation}
+	X=
+ \left[
+ \begin{array}{cccccc}
+     2 & 3 & 3 &4 &5 &7 \\
+    2 &4 &5 &5 &6 &8 \\
+ \end{array}
+ \right]        
+ \end{equation}
+	
+	
+\end{enumerate}
+
+\begin{solution}
+此处用于写解答(中英文均可)
+\end{solution}
+
+\section*{[20 pts] Problem 2 [KNN]}
+已知$err=1-\sum_{c \in Y}P^2(c|x)$
+，$err*=1-max_{c \in Y}P(c|x)$分别表示最近邻分类器与贝叶斯最优分类器的期望错误率，其中Y为类别总数，请证明：\begin{equation*}err^* \leq err \leq err^*(2-\frac{|Y|}{|Y|-1}*err^*)\end{equation*}
+
+\begin{solution}
+此处用于写解答(中英文均可)
+\end{solution}
+\newpage
+
+\section*{[25 pts] Problem 3 [Naive Bayes Classifier]}
+通过对课本的学习，我们了解了采用“属性条件独立性假设”的朴素贝叶斯分类器。现在我们有如下表所示的一个数据集，其中$x_1$与$x_2$为特征，其取值集合分别为$x_1=\{-1,0,1\}$，$x_2=\{B,M,S\}$，y为类别标记，其取值集合为$y=\{0,1\}$：
+	\begin{table}[htp]
+		\centering
+		\caption{数据集}\label{tab:aStrangeTable}
+	\begin{tabular}{cccccccccccccccc}
+		\hline 
+	编号	& $1$ & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$ & $9$ & $10$ & $11$ & $12$ & $13$ & $14$ & $15$\\ 
+		\hline 
+	$x_1$	& -1 & -1 & -1 & -1 & -1 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 \\ 
+		\hline 
+	$x_2$	& $B$ &$M$ &$M$ &$B$ &$B$ &$B$ &$M$ &$M$ &$S$ &$S$ &$S$ &$M$ &$M$ &$S$ &$S$  \\ 
+		\hline 
+	$y$	& 0 & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 0 \\ 
+		\hline 
+	\end{tabular}
+	\end{table} 
+	
+	\begin{enumerate}[(1)]
+	    \item \textbf{[5pts]}通过查表直接给出的$x=\{0,B\}$的类别；
+		\item \textbf{[10pts]} 使用所给训练数据，学习一个朴素贝叶斯试分类器，并确定$x=\{0,B\}$的标记，要求写出详细计算过程；
+		\item \textbf{[10pts]} 使用“拉普拉斯修正”，即取$\lambda$=1，再重新计算$x=\{0,B\}$的标记，要求写出详细计算过程。
+	\end{enumerate}
+	
+\begin{solution}
+此处用于写解答(中英文均可)
+\end{solution}
+
+	
+
+
+
+
+\section*{[20 pts] Problem 4 [KNN in Practice]}
+
+\par 
+\begin{enumerate}[(1)]
+	\item \textbf{[20 pts]} 结合编程题指南，实现KNN算法。
+
+\end{enumerate}
+
+\begin{solution}
+此处用于写解答(中英文均可)
+\end{solution}
+
+\end{document}
