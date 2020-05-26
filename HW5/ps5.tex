@@ -93,22 +93,83 @@
  \end{array}
  \right]        
  \end{equation}
-	
-	
+		
 \end{enumerate}
 
 \begin{solution}
-此处用于写解答(中英文均可)
+~\\(1) 当数据受到噪声影响时，较小特征值对应的特征向量相对更可能与噪声有关，因而将它们舍弃能在一定程度上起到降噪的效果。
+ \\(2) 显然，主成分分析当中主成分（即特征向量）的最大值与$N$个样本（样本维度$D>N$）组成的数据集对应的协方差矩阵的秩相等。而矩阵的秩被样本数所限制，对于协方差矩阵（$N$维方阵），由于所有样本都进行了中心化处理，至多有$N-1$个非零特征值所对应的特征向量，因此主成分分析的有效偷影子空间不超过$N-1$维。
+ \\(3) 首先对所有样本进行中心化，有：
+ \begin{equation}\nonumber
+	X=
+ \left[
+ \begin{array}{cccccc}
+     -2 &-1 &-1 &0 &1 &3 \\
+     -3 &-1 &0  &0 &1 &3 \\
+ \end{array}
+ \right]        
+ \end{equation}
+上述样本数据对应的协方差矩阵为：
+\begin{equation}\nonumber
+	S = \frac{1}{6}XX^{\top}=
+ \left[
+ \begin{array}{cc}
+     \dfrac{8}{3}	&\dfrac{17}{6}\\[9pt]
+     \dfrac{17}{6}	&\dfrac{10}{3}\\
+ \end{array}
+ \right]        
+\end{equation}
+接下来对协方差矩阵进行特征值分解，求解得特征值：$$\lambda_1 = \frac{18+\sqrt{293}}{6},\ \lambda_2 = \frac{18-\sqrt{293}}{6}.$$分别代入，因此对应归一化后特征向量为：
+\begin{gather*}
+\xi_1 = \begin{bmatrix} 0.66451 \\ 0.74728 \end{bmatrix}\quad
+\xi_2 = \begin{bmatrix} 0.74728 \\ -0.66451 \end{bmatrix}
+\end{gather*}
+降维后所得的结果为：
+\begin{equation}\nonumber
+\begin{aligned}
+	X' = \xi_1^{\top} X &= 
+ \left[
+ \begin{array}{cc}
+ 0.66451 & 0.74728
+ \end{array} 
+ \right]	
+ \left[
+ \begin{array}{cccccc}
+     -2 &-1 &-1 &0 &1 &3 \\
+     -3 &-1 &0  &0 &1 &3
+ \end{array}
+ \right]\\&=        
+ \left[
+ \begin{array}{cccccc}
+     -3.57086 &-1.41179 &-0.66451 &0 &1.41179 &4.23537
+ \end{array}\right]
+\end{aligned}
+\end{equation}
 \end{solution}
 
 \section*{[20 pts] Problem 2 [KNN]}
 已知$err=1-\sum_{c \in Y}P^2(c|x)$
-，$err*=1-max_{c \in Y}P(c|x)$分别表示最近邻分类器与贝叶斯最优分类器的期望错误率，其中Y为类别总数，请证明：\begin{equation*}err^* \leq err \leq err^*(2-\frac{|Y|}{|Y|-1}*err^*)\end{equation*}
+，$err*=1-\max_{c \in Y}P(c|x)$分别表示最近邻分类器与贝叶斯最优分类器的期望错误率，其中Y为类别总数，请证明：\begin{equation*}err^* \leqslant err \leqslant err^*(2-\frac{|Y|}{|Y|-1}\,	err^*)\end{equation*}
 
 \begin{solution}
-此处用于写解答(中英文均可)
+~\\该题证明部分参考\cite{1053964}中的相关内容。\\令$c^* = \arg\max_{c\in Y}P(c|x)$. 注意到：$\sum_{c \in Y\backslash\{c^*\}} P(c|x) = 1 - P(c^*|x) = err^*$.\\
+首先考虑上述不等式的下界，容易得到：
+$$\sum_{c \in Y\backslash\{c^*\}}P^2(c|x)\leqslant P(c^*|x)\sum_{c \in Y\backslash\{c^*\}} P(c|x) = P(c^*|x)(1-P(c^*|x))$$
+不等式两边同时加$P^2(c^*|x)$有：
+$$\sum_{c \in Y}P^2(c|x)\leqslant P(c^*|x)$$
+由$err$和$err^*$的定义，故有：$$err^*\leqslant err.$$
+接下来考虑上界，根据Cauchy-Schwarz不等式有：
+$$(|Y|-1)\sum_{c \in Y\backslash\{c^*\}}P^2(c|x)\geqslant \left[\sum_{c \in Y\backslash\{c^*\}}P(c|x)\right]^2 = \left(err^*\right)^2$$
+不等式两边同时加$(|Y|-1)P^2(c^*|x)$有：
+\begin{equation}
+\begin{aligned}
+(|Y|-1)\sum_{c \in Y}P^2(c|x)&\geqslant\left(err^*\right)^2+(|Y|-1)P^2(c^*|x)\\&=\left(err^*\right)^2+(|Y|-1)(1-err^*)^2\label{con:ineq}
+\end{aligned}
+\end{equation}
+由于$err=1-\sum_{c \in Y}P^2(c|x)$，将\eqref{con:ineq}代入可得：
+$$err\leqslant 2err^*-\frac{|Y|}{|Y|-1}(err^*)^2 = err^*(2-\frac{|Y|}{|Y|-1}\,	err^*)$$
+因此可得：\begin{equation*}err^* \leqslant err \leqslant err^*(2-\frac{|Y|}{|Y|-1}\,	err^*)\end{equation*}	
 \end{solution}
-\newpage
 
 \section*{[25 pts] Problem 3 [Naive Bayes Classifier]}
 通过对课本的学习，我们了解了采用“属性条件独立性假设”的朴素贝叶斯分类器。现在我们有如下表所示的一个数据集，其中$x_1$与$x_2$为特征，其取值集合分别为$x_1=\{-1,0,1\}$，$x_2=\{B,M,S\}$，y为类别标记，其取值集合为$y=\{0,1\}$：
@@ -133,26 +194,42 @@
 		\item \textbf{[10pts]} 使用所给训练数据，学习一个朴素贝叶斯试分类器，并确定$x=\{0,B\}$的标记，要求写出详细计算过程；
 		\item \textbf{[10pts]} 使用“拉普拉斯修正”，即取$\lambda$=1，再重新计算$x=\{0,B\}$的标记，要求写出详细计算过程。
 	\end{enumerate}
-	
 \begin{solution}
-此处用于写解答(中英文均可)
+~\\(1) 查表知$x=\{0,B\}$的类别为$0$.
+ \\(2) 由表 \ref{tab:aStrangeTable} 可知类先验概率：$$P(y=0)=\frac{2}{5},\ P(y=1)=\frac{3}{5}$$
+以及相应的条件概率：\begin{equation}\nonumber
+\begin{aligned}
+&P(x_1=-1|y=0)=\frac{1}{2},\ P(x_1=0|y=0)=\frac{1}{3},\ P(x_1=1|y=0)=\frac{1}{6}\\
+&P(x_1=-1|y=1)=\frac{2}{9},\ P(x_1=0|y=1)=\frac{1}{3},\ P(x_1=1|y=1)=\frac{4}{9}\\
+&P(x_2=B|y=0)=\frac{1}{2},\ P(x_2=M|y=0)=\frac{1}{3},\ P(x_2=S|y=0)=\frac{1}{6}\\
+&P(x_2=B|y=1)=\frac{1}{9},\ P(x_2=M|y=1)=\frac{4}{9},\ P(x_2=S|y=1)=\frac{4}{9}
+\end{aligned}
+\end{equation}
+由此对样本$x=\{0,B\}$进行预测：
+$$P(y=0)\times P(x_1=0|y=0)\times P(x_2=B|y=0)=\frac{1}{15}$$$$P(y=1)\times P(x_1=0|y=1)\times P(x_2=B|y=1)=\frac{1}{45}$$
+由于$\dfrac{1}{15}>\dfrac{1}{45}$，因此该样本被预测为$y=0$类。\\[6pt]
+ (3) 由表 \ref{tab:aStrangeTable} 可知类先验概率：$$\hat{P}(y=0)=\frac{7}{17},\ \hat{P}(y=1)=\frac{10}{17}$$
+以及相应的条件概率：\begin{equation}\nonumber
+\begin{aligned}
+&\hat{P}(x_1=-1|y=0)=\frac{4}{9},\ \hat{P}(x_1=0|y=0)=\frac{1}{3},\ \hat{P}(x_1=1|y=0)=\frac{2}{9}\\
+&\hat{P}(x_1=-1|y=1)=\frac{1}{4},\ \hat{P}(x_1=0|y=1)=\frac{1}{3},\ \hat{P}(x_1=1|y=1)=\frac{5}{12}\\
+&\hat{P}(x_2=B|y=0)=\frac{4}{9},\ \hat{P}(x_2=M|y=0)=\frac{1}{3},\ \hat{P}(x_2=S|y=0)=\frac{2}{9}\\
+&\hat{P}(x_2=B|y=1)=\frac{1}{6},\ \hat{P}(x_2=M|y=1)=\frac{5}{12},\ \hat{P}(x_2=S|y=1)=\frac{5}{12}
+\end{aligned}
+\end{equation}
+由此对样本$x=\{0,B\}$进行预测：
+$$\hat{P}(y=0)\times \hat{P}(x_1=0|y=0)\times \hat{P}(x_2=B|y=0)=\frac{28}{459}$$$$\hat{P}(y=1)\times \hat{P}(x_1=0|y=1)\times \hat{P}(x_2=B|y=1)=\frac{5}{153}$$
+由于$\dfrac{28}{459}>\dfrac{5}{153}$，因此该样本仍被预测为$y=0$类。
 \end{solution}
-
-	
-
-
-
 
 \section*{[20 pts] Problem 4 [KNN in Practice]}
-
 \par 
-\begin{enumerate}[(1)]
-	\item \textbf{[20 pts]} 结合编程题指南，实现KNN算法。
-
-\end{enumerate}
+	结合编程题指南，实现KNN算法。
 
 \begin{solution}
-此处用于写解答(中英文均可)
+~\\函数实现及相应预测结果见附件。
 \end{solution}
 
+\bibliographystyle{plain}
+\bibliography{ref.bib}
 \end{document}
