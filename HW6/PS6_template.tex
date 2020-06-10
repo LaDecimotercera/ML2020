@@ -5,10 +5,13 @@
 \usepackage{bm}
 \usepackage{color}
 \usepackage{ctex}
+\usepackage[unicode=true,colorlinks,linkcolor=blue,citecolor=blue]{hyperref} % 超链接
+\setCJKmainfont[BoldFont=SimHei, ItalicFont=KaiTi]{SimSun}
 \usepackage{enumerate}
 \usepackage[margin=1.25in]{geometry}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{minted}
 \usepackage{tcolorbox}
 \usepackage{algorithm}
 \usepackage{algorithmic}
@@ -31,13 +34,15 @@
 \pagestyle{fancy}                    % 设置页眉                 
 \lhead{2020年春季}                    
 \chead{机器学习导论}                                                
-% \rhead{第\thepage/\pageref{LastPage}页} 
+\rhead{第\thepage/\pageref{LastPage}页} 
 \rhead{作业一}                                                                                               
 \cfoot{\thepage}                                                
 \renewcommand{\headrulewidth}{1pt}  			%页眉线宽，设为0可以去页眉线
 \setlength{\skip\footins}{0.5cm}    			%脚注与正文的距离           
 \renewcommand{\footrulewidth}{0pt}  			%页脚线宽，设为0可以去页脚线
-
+\renewcommand{\algorithmicrequire}{\textbf{输入:}}
+\renewcommand{\algorithmicensure}{\textbf{输出:}}
+	
 \makeatletter 									%设置双线页眉                                        
 \def\headrule{{\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi%
 		\hrule\@height 1.0pt \@width\headwidth\vskip1pt	%上面线为1pt粗  
@@ -46,16 +51,14 @@
 	\vspace{6mm}}     								%双线与下面正文之间的垂直间距              
 \makeatother  
 
-
 \begin{document}
 	\title{机器学习导论\\
 		习题六}
-	\author{学号, 作者姓名, 邮箱}
+	\author{181220031, 李惟康, \texttt{liwk@smail.nju.edu.cn}}
 	\maketitle
 	
 	
 	\section*{学术诚信}
-	
 	本课程非常重视学术诚信规范，助教老师和助教同学将不遗余力地维护作业中的学术诚信规范的建立。希望所有选课学生能够对此予以重视。\footnote{参考尹一通老师\href{http://tcs.nju.edu.cn/wiki/}{高级算法课程}中对学术诚信的说明。}
 	
 	\begin{tcolorbox}
@@ -67,12 +70,13 @@
 	\end{tcolorbox}
 	
 	\section*{作业提交注意事项}
+	
 	\begin{tcolorbox}
 		\begin{enumerate}
-			\item[(1)] 请在\LaTeX模板中{\color{red}\textbf{第一页填写个人的姓名、学号、邮箱信息}}；
+			\item[(1)] 请在\LaTeX 模板中{\color{red}\textbf{第一页填写个人的姓名、学号、邮箱信息}}；
 			\item[(2)] 本次作业需提交该pdf文件、问题3可直接运行的源码(BoostMain.py, RandomForestMain.py，不需要提交数据集)，将以上三个文件压缩成zip文件后上传。zip文件格式为{\color{red}\textbf{学号.zip}}，例如170000001.zip；pdf文件格式为{\color{red}\textbf{学号\_姓名.pdf}}，例如170000001\_张三.pdf。
 			\item[(3)] 未按照要求提交作业，或提交作业格式不正确，将会{\color{red}\textbf{被扣除部分作业分数}}；
-			\item[(4)] 本次作业提交截止时间为{\color{red}\textbf{6月11日23:59:59。本次作业不允许缓交，截止时间后不接收作业，本次作业记零分}}。
+			\item[(4)] 本次作业提交截止时间为\ {\color{red}\textbf{6月11日23:59:59。本次作业不允许缓交，截止时间后不接收作业，本次作业记零分}}。
 		\end{enumerate}
 	\end{tcolorbox}
 	
@@ -83,7 +87,7 @@
 
 \section{\textbf{[25pts]} Bayesian Network}
 贝叶斯网(Bayesian Network)是一种经典的概率图模型，请学习书本7.5节内容回答下面的问题：
-
+latex 伪代码过程
 (1) \textbf{[5pts]} 请画出下面的联合概率分布的分解式对应的贝叶斯网结构：
 \begin{equation*}
 \Pr(A, B, C, D, E, F, G) = \Pr(A)\Pr(B)\Pr(C)\Pr(D|A)\Pr(E|A)\Pr(F|B, D)\Pr(G|D, E)
@@ -104,23 +108,40 @@
 \label{table:DAG}
 \begin{tabular}{c|l|c||c|l|c}\hline
 序号   		& 		关系  			& True/False 	& 序号   	& 		关系  			& True/False \\ \hline
-1			&	$A \indep B$ 		    & 			    & 7  		& 	$F \perp B|C$ 		& 			 \\
-2			&	$A \perp B|C$ 	    & 			    & 8  		& 	$F \perp B|C, D$ 	& 			 \\
-3			&	$C \indep D $		    & 			    & 9  		& 	$F \perp B|E$ 		& 			 \\
-4			&	$C \perp D|E$ 	    & 			    & 10  		& 	$A \indep F $			& 			 \\
-5			&	$C \perp D|B, F$     & 			    & 11  		& 	$A \perp F|C$ 		& 			 \\
-6			&	$F \indep B $		    & 			    & 12  		& 	$A \perp F|D$ 		& 			 \\ \hline
+1			&	$A \indep B$ 		    & \color{teal}{Ture} 			& 7  		& 	$F \perp B|C$ 		& \color{violet}{False} 			 \\
+2			&	$A \perp B|C$ 	        & \color{violet}{False}			    & 8  		& 	$F \perp B|C, D$ 	& \color{teal}{Ture}		 \\
+3			&	$C \indep D $		    & \color{violet}{False}			    & 9  		& 	$F \perp B|E$ 		& \color{teal}{Ture}			 \\
+4			&	$C \perp D|E$ 	     & \color{violet}{False} 			    & 10  		& 	$A \indep F $			& \color{violet}{False}			 \\
+5			&	$C \perp D|B, F$     & \color{violet}{False}			    & 11  		& 	$A \perp F|C$ 		& \color{violet}{False}			 \\
+6			&	$F \indep B $		    & \color{violet}{False}			& 12  		& 	$A \perp F|D$ 		& \color{violet}{False}			 \\ \hline
 \end{tabular}
 \end{table}
 
 \begin{solution}
-此处用于写解答(中英文均可)
-~\\
-~\\
-~\\
+~\\(1) 贝叶斯网结构如下图\ref{Fig.2}所示.
+ \\(2) 图\ref{fig-DAG}中贝叶斯网结构的联合概率分布的分解表达式:
+\begin{equation*}
+ \Pr(A, B, C, D, E, F) = \Pr(A)\Pr(B)\Pr(C|A,B)\Pr(D|B)\Pr(E|C,D)\Pr(F|E)
+\end{equation*} 
+ (3) 道德图如下图\ref{Fig.3}所示，补充完整的表格见表\ref{table:DAG}.
+\begin{figure}[H]
+\centering 
+%并排几个图，就要写几个minipage
+\begin{minipage}[b]{0.47\textwidth}
+\centering %图片局部居中
+\includegraphics[width=0.95\textwidth]{graph.png} 
+\caption{贝叶斯网结构}
+\label{Fig.2}
+\end{minipage}
+\begin{minipage}[b]{0.45\textwidth}
+\centering %图片局部居中
+\includegraphics[width=0.7\textwidth]{graph2.png}
+\caption{道德图}
+\label{Fig.3}
+\end{minipage}
+\end{figure}
+
 \end{solution}
-
-
 
 \section{\textbf{[35$+$10pts]} Theoretical Analysis of $k$-means Algorithm}
 给定样本集$\mathcal{D}=\left\{\mathbf{x}_{1}, \mathbf{x}_{2}, \ldots, \mathbf{x}_{n}\right\}$, $k$-means聚类算法希望获得簇划分$\mathcal{C}=\left\{C_{1}, C_{2}, \cdots, C_{k}\right\}$
@@ -139,17 +160,14 @@ J\left(\gamma, \mu_{1}, \ldots, \mu_{k}\right)=\sum_{i=1}^{n} \sum_{j=1}^{k} \ga
 		\begin{algorithmic}[1]{
 				\STATE Initialize $\mu_{1}, \ldots, \mu_{k}$;
 				\REPEAT
-				\STATE {\bf{Step 1:}} Decide the class memberships of $\left\{\mathbf{x}_{i}\right\}_{i=1}^{n}$ by assigning each of them
-				to its nearest cluster center.
-				
-				\begin{align}\gamma_{i j}=\left\{\begin{array}{ll}
+				\STATE {\bf{Step 1:}} Decide the class memberships of $\left\{\mathbf{x}_{i}\right\}_{i=1}^{n}$ by assigning each of them to its nearest cluster center.
+				\begin{align}\nonumber\gamma_{i j}=\left\{\begin{array}{ll}
 				1, & \left\|\mathbf{x}_{i}-\mu_{j}\right\|^{2} \leq\left\|\mathbf{x}_{i}-\mu_{j^{\prime}}\right\|^{2}, \forall j^{\prime} \\
 				0, & \text { otherwise }
 				\end{array}\right.\end{align}
-				\STATE {\bf{Step 2:}} For each $j \in\{1, \cdots, k\}$, recompute $\mu_j$ using the updated 
-$\gamma$ to be	the center of mass of all points in $C_j$ :
-			\begin{align}\mu_{j}=\frac{\sum_{i=1}^{n} \gamma_{i j} \mathbf{x}_{i}}{\sum_{i=1}^{n} \gamma_{i j}}\end{align}	
-		
+				\STATE {\bf{Step 2:}} For each $j \in\{1, \cdots, k\}$, recompute $\mu_j$ using the updated $\gamma$ to be	the center of mass of all points in $C_j$ :
+			\begin{align}\nonumber\mu_{j}=\frac{\sum_{i=1}^{n} \gamma_{i j} \mathbf{x}_{i}}{\sum_{i=1}^{n} \gamma_{i j}}
+			\end{align}	
 				\UNTIL the objective function J no longer changes;}
 		\end{algorithmic}
 		
@@ -161,7 +179,7 @@ $\gamma$ to be	the center of mass of all points in $C_j$ :
 (2) \textbf{[5pts]} 试证明, 算法\ref{alg:alg1}会在有限步内停止。
 
 
-(3) \textbf{[10pts]} 试证明, 目标函数J的最小值是关于$k$的非增函数, 其中$k$是聚类簇的数目。
+(3) \textbf{[10pts]} 试证明, 目标函数$J$的最小值是关于$k$的非增函数, 其中$k$是聚类簇的数目。
 
 (4) \textbf{[15pts]} 记$\hat{\mathbf{x}}$为$n$个样本的中心点, 定义如下变量,
 
@@ -184,17 +202,55 @@ J^{\prime}\left(\gamma, \mu_{1}, \ldots, \mu_{k}\right)=\sum_{i=1}^{n} \sum_{j=1
 \end{equation}
 \begin{itemize}
 	\item 请仿效算法\ref{alg:alg1},给出新的算法(命名为$k-$means-$\ell_{1}$算法)以优化公式\ref{eq4}中的目标函数$J^{\prime}$. 
-	\item 当样本集中存在少量异常点\href{https://en.wikipedia.org/wiki/Outlier}{(outliers)}时, 上述的$k-$means-$\ell_{2}$和$k-$means-$\ell_{1}$算法,	我们应该采用哪种算法？即哪个算法具有更好的鲁棒性？请说明理由。
+	\item 当样本集中存在少量异常点\href{https://en.wikipedia.org/wiki/Outlier}{(outliers)}时, 上述的$k-$means-$\ell_{2}$和$k-$means-$\ell_{1}$算法，我们应该采用哪种算法？即哪个算法具有更好的鲁棒性？请说明理由。
 \end{itemize}
 
 
 \begin{solution}
-	此处用于写解答(中英文均可)
-	~\\
-	~\\
-	~\\
+~\\(1) 算法\ref{alg:alg1}中的 Step 1 根据最近的簇均值向量确定$\left\{\mathbf{x}_{i}\right\}_{i=1}^{n}$的簇标记，即：$$\gamma_{i j}=1,\quad \text{if}\ \left\|\mathbf{x}_{i}-\mu_{j}\right\|^{2} \leq\left\|\mathbf{x}_{i}-\mu_{j^{\prime}}\right\|^{2},\; \forall j^{\prime}$$
+故显然 Step 1 会使目标函数$J$的值降低；\\而 Step 2 将所有簇标记相同的样本点的均值作为新的均值向量，令每一步更新后的第$j$个簇均值向量为：$$\mu_j'=\frac{\sum_{i=1}^{n} \gamma_{i j} \mathbf{x}_{i}}{\sum_{i=1}^{n} \gamma_{i j}},\; \forall j$$那么有：
+\begin{equation}\nonumber
+\begin{aligned}
+J\left(\gamma, \mu_{1}, \ldots, \mu_{k}\right)&=\sum_{i=1}^{n} \sum_{j=1}^{k} \gamma_{i j}\left\|\mathbf{x}_{i}-\mu_{j}\right\|^{2}\\&=\sum_{i=1}^{n} \sum_{j=1}^{k} \gamma_{i j}\left\|(\mathbf{x}_{i}-\mu_{j}')+(\mu_{j}'-\mu_{j})\right\|^{2}\\&=\sum_{i=1}^{n} \sum_{j=1}^{k} \gamma_{i j}\left(\left\|\mathbf{x}_{i}-\mu_{j}'\right\|^{2}+\left\|\mu_{j}'-\mu_{j}\right\|^{2}+2(\mathbf{x}_{i}-\mu_{j}')\cdot(\mu_{j}'-\mu_{j})\right)\\&=\sum_{i=1}^{n} \sum_{j=1}^{k} \gamma_{i j}\left\|\mathbf{x}_{i}-\mu_{j}'\right\|^{2}+n\sum_{j=1}^{k}\gamma_{i j}\left\|\mu_{j}'-\mu_{j}\right\|^{2}\\&\geqslant\sum_{i=1}^{n} \sum_{j=1}^{k} \gamma_{i j}\left\|\mathbf{x}_{i}-\mu_{j}'\right\|^{2}=J\left(\gamma, \mu_{1}', \ldots, \mu_{k}'\right).
+\end{aligned}
+\end{equation}
+即 Step 2 同样会使目标函数$J$的值降低。
+ \\(2) 由(1)中可知，算法\ref{alg:alg1}的每次迭代都会使得$J$降低，即$J$单调递减的。因此迭代过程中不会出现相同的$\gamma$。由于$\gamma$具有$nk$个元素，每个元素的值为0或1，因此它具有有限数量的可能值。故算法\ref{alg:alg1}会在有限步内停止。
+ \\(3) 假设对于$k=\alpha$，目标函数$J$的最小值关于$k$非增，新引入一个簇中心$\mu_{\alpha+1}$，易见此时的目标函数仍未收敛到最小值，即此时$J$还需减小以收敛到最小值。因此目标函数$J$的最小值关于$k$非增。
+ \\(4) 由题有： 
+ 	\begin{align*}
+ 	\sum_{j=1}^{k}\sum_{i=1}^{n}\gamma_{i j}W_j(X)+nB(X)&=\sum_{j=1}^{k}\sum_{i=1}^{n}\gamma_{i j}\left(\left\|\mathbf{x}_{i}-\mu_{j}\right\|^{2}+\left\|\mu_{j}-\hat{\mathbf{x}}\right\|^{2}\right)\\&=\sum_{j=1}^{k}\sum_{i=1}^{n}\gamma_{i j}\left(\mathbf{x}_i^2+\hat{\mathbf{x}}^2-2\mathbf{x}_i\hat{\mathbf{x}}+2\mathbf{x}_i\hat{\mathbf{x}}-2\mathbf{x}_i\mu_{j}-2\mu_{j}\hat{\mathbf{x}}+2\mu_{j}^2\right)\\&=\sum_{j=1}^{k}\left(\sum_{i=1}^{n}\gamma_{i j}\left\|\mathbf{x}_{i}-\hat{\mathbf{x}}\right\|^{2}\right)+k
+	\end{align*}
+	其中$k$为上式中对应的余项；
+	\begin{align*}
+	\sum_{j=1}^{k}\left(\sum_{i=1}^{n}\gamma_{i j}\left\|\mathbf{x}_{i}-\hat{\mathbf{x}}\right\|^{2}\right)+k&=\sum_{j=1}^{k}\left(\sum_{i=1}^{n}\gamma_{i j}\left\|\mathbf{x}_{i}-\hat{\mathbf{x}}\right\|^{2}\right)+k\\&=n\sum_{i=1}^{n}\left\|\mathbf{x}_{i}-\hat{\mathbf{x}}\right\|^{2}+k\\&=n^2T(X)+k
+	\end{align*}	
+	综上可得：$$\sum_{j=1}^{k}\sum_{i=1}^{n}\gamma_{i j}W_j(X)+nB(X)=n^2T(X)+k$$ 
+	由于：$\sum_{j=1}^{k}\sum_{i=1}^{n}\gamma_{i j}W_j(X)=J\left(\gamma, \mu_{1}, \ldots, \mu_{k}\right)$，即在 $k-$means 迭代过程中最小化，而 $n^2T(X)$ 为常数，则 $B(X)$ （近似）最大化。
+ \\(5) $\ell_{1^{-}}$范数度量下的$k-$means算法\ref{alg:alg2}伪代码如下：\\
+ {\begin{algorithm}[htbp]
+		\caption{ $k-$means-$l_1$ Algorithm }
+		\label{alg:alg2}
+		\begin{algorithmic}[1]{
+				\STATE Initialize $\mu_{1}, \ldots, \mu_{k}$;
+				\REPEAT
+				\STATE {\bf{Step 1:}} Decide the class memberships of $\left\{\mathbf{x}_{i}\right\}_{i=1}^{n}$ by assigning each of them to its nearest cluster center.
+				\begin{align}\nonumber\gamma_{i j}=\left\{\begin{array}{ll}
+				1, & \left\|\mathbf{x}_{i}-\mu_{j}\right\|_{1} \leq\left\|\mathbf{x}_{i}-\mu_{j^{\prime}}\right\|_{1}, \forall j^{\prime} \\
+				0, & \text { otherwise }
+				\end{array}\right.\end{align}
+				\STATE {\bf{Step 2:}} For each $j \in\{1, \cdots, k\}$, recompute $\mu_j$ using the updated $\gamma$ to be	the center of mass of all points in $C_j$ :
+			\begin{align}\nonumber\mu_{j}=\text{median}(x_j|\gamma_{i j}=1)
+			\end{align}	
+				\UNTIL the objective function J no longer changes;}
+		\end{algorithmic}
+\end{algorithm}}
+其中，$\ell_1$距离度量下，为了最小化(\ref{eq4})式：
+$$J^{\prime}\left(\gamma, \mu_{1}, \ldots, \mu_{k}\right)=\sum_{i=1}^{n} \sum_{j=1}^{k} \gamma_{i j}\left\|\mathbf{x}_{i}-\mu_{j}\right\|_{1}$$
+考虑仅对$\mu_j$的目标函数：$J^*=\sum_{i=1}^{n}\gamma_{i j}\left\|\mathbf{x}_{i}-\mu_{j}\right\|_{1}$求导得：$$\frac{\partial J^*}{\partial\mu_j}=\sum_{i=1}^{n}\gamma_{i j}\text{sgn}\left(\mathbf{x}_{i}-\mu_{j}\right)$$注意到当$\mathbf{x}_{i}>\mu_{j}$时$\text{sgn}\left(\mathbf{x}_{i}-\mu_{j}\right)=1$；当$\mathbf{x}_{i}<\mu_{j}$时$\text{sgn}\left(\mathbf{x}_{i}-\mu_{j}\right)=-1$。只有当$\text{sgn}\left(\mathbf{x}_{i}-\mu_{j}\right)$当中1和-1的数目相等时上/AdaBoost.py式中的偏导数为0，即目标函数$J^*$最小化，故$\mu_j$应取中位数：
+$$\mu_{j}=\text{median}(x_j|\gamma_{i j}=1)$$
+存在少量异常点时应当考虑使用$k-$means-$\ell_1$算法，显然异常点的存在对于平均值的影响要大于对于中位数的影响，即$k-$means-$\ell_1$算法具有更好的鲁棒性。
 \end{solution}
-
 
 \section{[40pts] Coding: Ensemble Methods }
 
@@ -217,8 +273,78 @@ J^{\prime}\left(\gamma, \mu_{1}, \ldots, \mu_{k}\right)=\sum_{i=1}^{n} \sum_{j=1
 	\item \textbf{[5pts]} 在实验报告中，除了报告上述要求报告的内容外还需要展现实验过程，实验报告需要有层次和条理性，能让读者仅通过实验报告便能了解实验的目的，过程和结果。
 	
 \end{enumerate}
-
-\noindent{\textbf{实验报告.}}
-
-
+\noindent{\large{\textbf{实验报告.}}}
+~\\[3pt]\textbf{1. 实验目的}
+\\本次实验主要实现了两种集成学习算法：Adaboost 与 Random Forest 算法，实现后首先在测试集上进行性能测试，通过调参等手段对性能进行优化。之后通过交叉验证探究基学习器(这里为决策树)数目与性能之间的关系以寻求最优基分类器数目，以此加深对于上述两种算法的理解与应用。
+\\[3pt]\textbf{2. 实验过程}
+\begin{itemize}
+\item[i.] AdaBoost: 根据教材上的相应伪代码不难实现这一算法，主要思路是定义\texttt{AdaBoost}类，其中有
+\texttt{fit, predict, predict\_proba, score}四个成员函数，分别代表训练、预测数据集对应的标签，预测数据集中样本属于\textbf{正例}的概率以及分类的准确性。(基分类器采用\texttt{sklearn.tree.DecisionTreeClassifier})需要特别注意的是，训练过程中如果基分类器的误差为0，则应当立即将其加入基分类器的列表中，将其对应权重置为1，并立即停止训练；另外值得一提的是在预测样本属于正例的概率时，为避免$n$个基分类器预测结果分别属于正例的概率之和大于1，应当对概率作加权平均的处理，即:
+\mint{python}|prob += (self.alpha[t]/self.alpha.sum())*self.base[t].predict_proba(X)[:,1]|
+\item[ii.] RandomForest: 这一算法的实现思路与AdaBoost类似，主要思路同样是定义\texttt{RandomFore\\st}类，其中有
+\texttt{bootstrap\_sample, fit, predict, predict\_proba, score}五个成员函数，分别代表自助采样、训练、预测数据集对应的标签，预测数据集中样本属于\textbf{正例}的概率以及分类的准确性。(基分类器采用\texttt{sklearn.tree.DecisionTreeClassifier})其中\texttt{fit}中，根据随机森林算法的要求，对基决策树每个结点应当选择$k=\log_2{d}$个属性，从中再选取最优属性进行划分，因此基决策树应当设置为:\texttt{DecisionTreeClassifier(max\_feature\\s="log2")}.此外，与AdaBoost不同，RandomForest的\texttt{predict}对多个基分类器的预测结果结合时，直接使用投票法即可：
+\begin{minted}{Python}
+    def predict(self, X):
+            m = X.shape[0]
+            votes = np.zeros((m, self.n_estimators)).astype(int)
+            for j in range(self.n_estimators):
+                votes[:,j] = self.base[j].predict(X)
+            y_pred = np.zeros(m).astype(int)
+            for i in range(m):
+                (values,counts) = np.unique(votes[i,:],return_counts=True)
+                y_pred[i] = values[counts.argmax()]
+            return y_pred
+\end{minted}
+即用\texttt{votes}的每一列存储一个基分类器的预测结果，最后按行(即对每一个样本)进行投票即可。与之相对应的，\texttt{predict\_proba}函数也采取与\texttt{predict}类似的思路，只在最终产生每个样本属于正例的概率时对每个基学习器的预测结果进行平均即可：
+\begin{minted}{python}
+    def predict_proba(self, X):
+        m = X.shape[0]
+        votes = np.zeros((m, self.n_estimators))
+        for j in range(len(self.base)):
+            votes[:,j] = self.base[j].predict_proba(X)[:,1]
+        prob = np.zeros(m)
+        for i in range(m):
+            prob[i] = votes[i, :].sum()/self.n_estimators
+        return prob
+\end{minted}
+\end{itemize}
+随机森林算法伪代码如下所示：
+ \begin{algorithm}[htbp]
+		\caption{ Random Forest }
+		\label{alg:alg3}
+		\begin{algorithmic}[1] %每行显示行号
+		\REQUIRE {训练集$D=\{(\mathbf{x_1},y_1),(\mathbf{x_2},y_2),\dots,(\mathbf{x_n},y_n)\}$;\\\quad\,基学习算法$\mathfrak{L}$(决策树引入随机属性选择);\\\quad\,训练轮数$T$.}
+		\ENSURE $H(X)=\mathop{\arg\max}\limits_{y\in\mathcal{Y}}\sum_{t=1}^{T}\mathbb{I}(h_t(x)=y)$
+		\FOR{$t=1,2,\dots,T$} 
+			\STATE $h_t=\mathfrak{L}(D,\mathcal{D}_{b s})$
+		\ENDFOR		
+		\end{algorithmic}
+\end{algorithm}
+\\[3pt]\textbf{3. 实验结果}\\
+AdaBoost与Random Forest算法在测试集上的预测结果(指标为准确率，基学习器数目为50)如下所示：
+\begin{figure}[H] %H为当前位置，!htb为忽略美学标准，htbp为浮动图形
+\centering %图片居中
+\includegraphics[width=0.75\textwidth]{ada_basetest.png} %插入图片，[]中设置图片大小，{}中是图片文件名
+\\[3pt]\includegraphics[width=0.8\textwidth]{rf_basetest.png}
+\end{figure}
+\noindent 经过对于基学习器的参数调整，性能有少许提升：
+\begin{figure}[H] %H为当前位置，!htb为忽略美学标准，htbp为浮动图形
+\centering %图片居中
+\includegraphics[width=0.75\textwidth]{ada_test.png} %插入图片，[]中设置图片大小，{}中是图片文件名
+\\[3pt]\includegraphics[width=0.8\textwidth]{rf_test.png}
+\end{figure}
+\noindent 对AdaBoost与RandomForest使用(5折)交叉验证所得到的基分类器数目与AUC指标之间的关系如下图所示：
+\begin{figure}[H] %H为当前位置，!htb为忽略美学标准，htbp为浮动图形
+\label{Fig.4}
+\centering %图片居中
+\includegraphics[width=0.75\textwidth]{stat.jpg} 
+\caption{AdaBoost与RandomForest在不同基分类器数目下的AUC指标}
+\end{figure}
+\noindent 由上图4所示，对于AdaBoost算法，基分类器数目在1到10之间时，AUC指标上升较快，超过10之后上升非常缓慢，以致在小范围内波动；而对于RandomForest算法，基分类器数目在1到15之间时AUC都保持了较快的上升趋势，而在超过35之后变得十分缓慢。\\
+根据上述分析，我们选取交叉验证时使得AUC指标最好的分类器数目作为最优分类器数目。故对于AdaBoost取30，对于RandomForest取46，可得：
+\begin{figure}[H] %H为当前位置，!htb为忽略美学标准，htbp为浮动图形
+\centering %图片居中
+\includegraphics[width=0.45\textwidth]{ada_auc.png} %插入图片，[]中设置图片大小，{}中是图片文件名
+\\[3pt]\includegraphics[width=0.48\textwidth]{rf_auc.png}
+\end{figure}
 \end{document}

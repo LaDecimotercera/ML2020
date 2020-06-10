@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PYG{k}{def} \PYG{n+nf}{predict\PYGZus{}proba}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{X}\PYG{p}{):}
+        \PYG{n}{m} \PYG{o}{=} \PYG{n}{X}\PYG{o}{.}\PYG{n}{shape}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}
+        \PYG{n}{votes} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{((}\PYG{n}{m}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{n\PYGZus{}estimators}\PYG{p}{))}
+        \PYG{k}{for} \PYG{n}{j} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{base}\PYG{p}{)):}
+            \PYG{n}{votes}\PYG{p}{[:,}\PYG{n}{j}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{base}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{.}\PYG{n}{predict\PYGZus{}proba}\PYG{p}{(}\PYG{n}{X}\PYG{p}{)[:,}\PYG{l+m+mi}{1}\PYG{p}{]}
+        \PYG{n}{prob} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{m}\PYG{p}{)}
+        \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{m}\PYG{p}{):}
+            \PYG{n}{prob}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{n}{votes}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,} \PYG{p}{:]}\PYG{o}{.}\PYG{n}{sum}\PYG{p}{()}\PYG{o}{/}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{n\PYGZus{}estimators}
+        \PYG{k}{return} \PYG{n}{prob}
+\end{Verbatim}

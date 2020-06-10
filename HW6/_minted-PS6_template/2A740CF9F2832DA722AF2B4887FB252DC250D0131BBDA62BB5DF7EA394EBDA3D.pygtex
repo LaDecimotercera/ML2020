@@ -1,0 +1,12 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PYG{k}{def} \PYG{n+nf}{predict}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{X}\PYG{p}{):}
+            \PYG{n}{m} \PYG{o}{=} \PYG{n}{X}\PYG{o}{.}\PYG{n}{shape}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}
+            \PYG{n}{votes} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{((}\PYG{n}{m}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{n\PYGZus{}estimators}\PYG{p}{))}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n+nb}{int}\PYG{p}{)}
+            \PYG{k}{for} \PYG{n}{j} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{n\PYGZus{}estimators}\PYG{p}{):}
+                \PYG{n}{votes}\PYG{p}{[:,}\PYG{n}{j}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{base}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{.}\PYG{n}{predict}\PYG{p}{(}\PYG{n}{X}\PYG{p}{)}
+            \PYG{n}{y\PYGZus{}pred} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{m}\PYG{p}{)}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n+nb}{int}\PYG{p}{)}
+            \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{m}\PYG{p}{):}
+                \PYG{p}{(}\PYG{n}{values}\PYG{p}{,}\PYG{n}{counts}\PYG{p}{)} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{unique}\PYG{p}{(}\PYG{n}{votes}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,:],}\PYG{n}{return\PYGZus{}counts}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{)}
+                \PYG{n}{y\PYGZus{}pred}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{n}{values}\PYG{p}{[}\PYG{n}{counts}\PYG{o}{.}\PYG{n}{argmax}\PYG{p}{()]}
+            \PYG{k}{return} \PYG{n}{y\PYGZus{}pred}
+\end{Verbatim}
