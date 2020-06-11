@@ -87,7 +87,7 @@
 
 \section{\textbf{[25pts]} Bayesian Network}
 贝叶斯网(Bayesian Network)是一种经典的概率图模型，请学习书本7.5节内容回答下面的问题：
-latex 伪代码过程
+
 (1) \textbf{[5pts]} 请画出下面的联合概率分布的分解式对应的贝叶斯网结构：
 \begin{equation*}
 \Pr(A, B, C, D, E, F, G) = \Pr(A)\Pr(B)\Pr(C)\Pr(D|A)\Pr(E|A)\Pr(F|B, D)\Pr(G|D, E)
@@ -229,7 +229,7 @@ J\left(\gamma, \mu_{1}, \ldots, \mu_{k}\right)&=\sum_{i=1}^{n} \sum_{j=1}^{k} \g
 	由于：$\sum_{j=1}^{k}\sum_{i=1}^{n}\gamma_{i j}W_j(X)=J\left(\gamma, \mu_{1}, \ldots, \mu_{k}\right)$，即在 $k-$means 迭代过程中最小化，而 $n^2T(X)$ 为常数，则 $B(X)$ （近似）最大化。
  \\(5) $\ell_{1^{-}}$范数度量下的$k-$means算法\ref{alg:alg2}伪代码如下：\\
  {\begin{algorithm}[htbp]
-		\caption{ $k-$means-$l_1$ Algorithm }
+		\caption{ $k-$means-$\ell_1$ Algorithm }
 		\label{alg:alg2}
 		\begin{algorithmic}[1]{
 				\STATE Initialize $\mu_{1}, \ldots, \mu_{k}$;
@@ -247,7 +247,7 @@ J\left(\gamma, \mu_{1}, \ldots, \mu_{k}\right)&=\sum_{i=1}^{n} \sum_{j=1}^{k} \g
 \end{algorithm}}
 其中，$\ell_1$距离度量下，为了最小化(\ref{eq4})式：
 $$J^{\prime}\left(\gamma, \mu_{1}, \ldots, \mu_{k}\right)=\sum_{i=1}^{n} \sum_{j=1}^{k} \gamma_{i j}\left\|\mathbf{x}_{i}-\mu_{j}\right\|_{1}$$
-考虑仅对$\mu_j$的目标函数：$J^*=\sum_{i=1}^{n}\gamma_{i j}\left\|\mathbf{x}_{i}-\mu_{j}\right\|_{1}$求导得：$$\frac{\partial J^*}{\partial\mu_j}=\sum_{i=1}^{n}\gamma_{i j}\text{sgn}\left(\mathbf{x}_{i}-\mu_{j}\right)$$注意到当$\mathbf{x}_{i}>\mu_{j}$时$\text{sgn}\left(\mathbf{x}_{i}-\mu_{j}\right)=1$；当$\mathbf{x}_{i}<\mu_{j}$时$\text{sgn}\left(\mathbf{x}_{i}-\mu_{j}\right)=-1$。只有当$\text{sgn}\left(\mathbf{x}_{i}-\mu_{j}\right)$当中1和-1的数目相等时上/AdaBoost.py式中的偏导数为0，即目标函数$J^*$最小化，故$\mu_j$应取中位数：
+考虑仅对$\mu_j$的目标函数：$J^*=\sum_{i=1}^{n}\gamma_{i j}\left\|\mathbf{x}_{i}-\mu_{j}\right\|_{1}$求导得：$$\frac{\partial J^*}{\partial\mu_j}=\sum_{i=1}^{n}\gamma_{i j}\text{sgn}\left(\mathbf{x}_{i}-\mu_{j}\right)$$注意到当$\mathbf{x}_{i}>\mu_{j}$时$\text{sgn}\left(\mathbf{x}_{i}-\mu_{j}\right)=1$；当$\mathbf{x}_{i}<\mu_{j}$时$\text{sgn}\left(\mathbf{x}_{i}-\mu_{j}\right)=-1$。只有当$\text{sgn}\left(\mathbf{x}_{i}-\mu_{j}\right)$一式当中1和-1的数目相等时上式中的偏导数为0，即使得目标函数$J^*$最小化，因此$\mu_j$应取中位数：
 $$\mu_{j}=\text{median}(x_j|\gamma_{i j}=1)$$
 存在少量异常点时应当考虑使用$k-$means-$\ell_1$算法，显然异常点的存在对于平均值的影响要大于对于中位数的影响，即$k-$means-$\ell_1$算法具有更好的鲁棒性。
 \end{solution}
